@@ -1,0 +1,88 @@
+/* 기본 설정 */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #0a0a0a;
+  color: #e5e5e5;
+}
+
+/* 네비게이션 */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: #111;
+  border-bottom: 1px solid #222;
+  position: sticky;
+  top: 0;
+}
+
+.nav h1 {
+  font-size: 24px;
+  color: #00eaff;
+}
+
+.nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #e5e5e5;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav a:hover {
+  color: #00eaff;
+}
+
+/* 히어로 섹션 */
+.hero {
+  text-align: center;
+  padding: 130px 20px;
+  background: url("assets/bg.jpg") center/cover no-repeat, #000;
+  color: white;
+  box-shadow: inset 0 0 200px rgba(0,0,0,0.7);
+}
+
+.hero h2 {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #00eaff;
+}
+
+.hero p {
+  opacity: 0.8;
+  font-size: 18px;
+}
+
+/* 본문 섹션 */
+.section {
+  max-width: 900px;
+  margin: 70px auto;
+  padding: 30px;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgba(0, 238, 255, 0.08);
+}
+
+.section h3 {
+  color: #00eaff;
+  border-left: 4px solid #00eaff;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+.section ul li {
+  margin: 8px 0;
+}
+
+/* 푸터 */
+footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 80px;
+  background: #111;
+  color: #777;
+  border-top: 1px solid #222;
+}
