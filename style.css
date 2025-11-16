@@ -39,7 +39,7 @@ body {
 .hero {
   text-align: center;
   padding: 130px 20px;
-  background: url("assets/bg.jpg") center/cover no-repeat, #000;
+  background: url("assets/USELab-bg.png") center/cover no-repeat, #000;
   color: white;
   box-shadow: inset 0 0 200px rgba(0,0,0,0.7);
 }
