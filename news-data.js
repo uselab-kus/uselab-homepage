@@ -1,0 +1,76 @@
+// 최신 뉴스가 위에 오도록 작성하세요 (최신순)
+
+const NEWS = [
+  {
+    date: "2025.11",
+    title: "YoungBok Jo joined USELab.",
+    tag: "Members"
+  },
+  {
+    date: "2025.10",
+    title: "Jeongyun Lee joined USELab.",
+    tag: "Members"
+  },
+  {
+    date: "2025.09",
+    title: "Dohyun Kwak joined USELab.",
+    tag: "Members"
+  },
+  {
+    date: "2025.06",
+    title: "한국암호포럼 위탁연구과제 선정 (우주·항공체 OTAR(Over-The-Air Rekeying) 보안 기술 연구)",
+    tag: "Grant"
+  },
+  {
+    date: "2025.05",
+    title: "한국사이버안보학회 위협대응연구회 위탁연구과제 선정 (공공기관 다수 사용 SW 취약점 분석)",
+    tag: "Grant"
+  },
+  {
+    date: "2025.04",
+    title: "Heeji Yang joined USELab.",
+    tag: "Members"
+  },
+  {
+    date: "2025.04",
+    title: "국가보안기술연구소(NSR) 위탁연구과제 선정 (스마트기기 소프트웨어 보안성 검증기술 연구)",
+    tag: "Grant"
+  },
+  {
+    date: "2025.03",
+    title: "Seongyeol Oh joined USELab.",
+    tag: "Members"
+  },
+  {
+    date: "2024.09",
+    title: "Jeonil Ji joined USELab.",
+    tag: "Members"
+  }
+];
+
+
+  // {
+  //   date: "2025.02",
+  //   title: "Paper accepted to ACM CCS 2025.",
+  //   tag: "Paper"
+  // },
+  // {
+  //   date: "2024.12",
+  //   title: "Received NRF research grant for AI-based log protection.",
+  //   tag: "Grant"
+  // },
+  // {
+  //   date: "2024.09",
+  //   title: "New undergraduate researchers joined USELab.",
+  //   tag: "Members"
+  // },
+  // {
+  //   date: "2024.06",
+  //   title: "Presented our work at IEEE S&P 2024.",
+  //   tag: "Conference"
+  // },
+  // {
+  //   date: "2024.03",
+  //   title: "Launched new research project on AI-driven digital forensics.",
+  //   tag: "Project"
+  // }

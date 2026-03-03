@@ -1,11 +1,233 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="stanford">
 <head>
-  <meta charset="UTF-8">
-  <title>USELab</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>USELab — Security Research Lab</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Welcome to USELab</h1>
-  <p>This is our temporary homepage.</p>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="index.html">USELab @ KUS</a>
+
+      <nav class="nav">
+        <a href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="members.html">Members</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="kicker">Security • AI • Digital Forensics</div>
+      <h1>User-centered SEcurity Lab (USELab)</h1>
+      <p class="lead">
+        The lab is a part of the Department of Artificial Intelligence Cyber Security (AICS),
+        Korea University Sejong Campus (KUS). Our research goal is to develop more secure and usable systems.
+      </p>
+
+      <div class="cta-row">
+        <a class="btn primary" href="publications.html">See Publications</a>
+        <!-- <a class="btn" href="#contact">Join / Contact</a> -->
+        <!-- <a class="btn" href="join.html">Join</a> -->
+        <a class="btn" href="contact.html">Contact</a>
+      </div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section id="research" class="section">
+      <h2>Research Areas</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>Security</h3>
+          <!-- <p>
+            Robust ML, adversarial defense, model behavior analysis,
+            and secure deployment pipelines.
+          </p> -->
+          <ul style="margin-top: 12px;">
+            <li>Data-driven security</li>
+            <li>Anomaly detection</li>
+            <li>Security protocol</li>
+            <li>Threat modeling</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>AI-driven Digital Forensics</h3>
+          <!-- <p>
+            Memory analysis, file-system investigation,
+            and automated incident response.
+          </p> -->
+          <ul style="margin-top: 12px;">
+            <li>Memory analysis</li>
+            <li>File-system investigation</li>
+            <li>Automated incident response</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Usable Security</h3>
+          <!-- <p>
+            Designing authentication systems and defenses that
+            users can adopt and trust.
+          </p> -->
+          <ul style="margin-top: 12px;">
+            <li>User authentication</li>
+            <li>User perception</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- <section id="publications" class="section"> 
+      <h2>Selected Publications</h2> 
+      
+      <ul class="list"> 
+        <li> <span class="tag">2025</span> Paper title — Venue</li> 
+        <li><span class="tag">2024</span> Paper title — Venue</li> 
+        <li><span class="tag">2023</span> Paper title — Venue</li>
+      </ul> 
+      <p class="muted">Tip: 나중에 Google Scholar 링크/DBLP 링크도 여기에 붙이면 “학술 사이트” 느낌 확 살아요.</p> 
+    </section>     -->
+
+
+    <!-- ======================
+         NEWS
+    ====================== -->
+    <section class="section">
+      <h2>News</h2>
+    
+      <ul class="news-list" id="latest-news"></ul>
+    
+      <div style="margin-top:20px;">
+        <a class="btn-small" href="news.html">View All News →</a>
+      </div>
+    </section>
+    
+    <script src="news-data.js"></script>
+    <script>
+      const latestContainer = document.getElementById("latest-news");
+    
+      NEWS.slice(0, 5).forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span class="news-date">${item.date}</span>
+          <span class="news-title">${item.title}</span>
+        `;
+        latestContainer.appendChild(li);
+      });
+    </script>
+
+
+    
+    <!-- MEMBERS -->
+    <section id="members" class="section">
+      <h2>Members</h2>
+
+      <div class="grid">
+        <a href="members/cho.html" class="member-card-link">
+          <div class="card">
+            <h3>Principal Investigator</h3>
+            <p>Geumhwan Cho</p>
+          </div>
+        </a>
+
+        <a href="members.html" class="member-card-link">
+          <div class="card">
+            <h3>Students</h3>
+            <p>Graduate & Undergraduate Researchers</p>
+          </div>
+        </a>
+        
+        <div class="card">
+          <h3>Alumni</h3>
+          <p>Former lab members</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOIN / RECRUITMENT -->
+    <section id="join" class="section">
+      <h2>Join USELab</h2>
+
+      <div class="card" style="margin-top: 10px;">
+        <p>
+          We are always looking for talented and motivated undergraduate and graduate students
+          who are interested in security, AI-driven digital forensics, and usable security.
+        </p>
+
+        <ul style="margin-top: 12px;">
+          <li>Strong interest in security research</li>
+          <li>Willingness to conduct independent research</li>
+        </ul>
+
+        <p style="margin-top: 14px;">
+          📧 Please send your CV and transcript to:
+          <strong>geumhwan@korea.ac.kr</strong>
+        </p>
+     
+      </div>
+
+      <div class="card" style="margin-top: 10px;">
+
+        <p>
+          <strong>사용자중심보안연구실</strong>에서는 연구원을 모집합니다. 학부 연구생, 석사, 박사 다 가능합니다.
+        </p>
+        <p>
+          관심있는 사람은 이메일(<strong>geumhwan@korea.ac.kr</strong>)주세요.
+        </p>
+      
+      </div>
+  
+    </section>
+
+    
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+
+      <div class="contact">
+        <div>
+          <div class="label">Email</div>
+          <div>geumhwan@korea.ac.kr</div>
+        </div>
+
+        <div>
+          <div class="label">Location</div>
+          <div>Korea University Sejong Campus</div>
+        </div>
+
+        <div>
+          <div class="label">Links</div>
+          <div>
+            <a href="https://github.com/uselab-kus/">GitHub</a> ·
+            <a href="https://scholar.google.com/citations?user=rWU956cAAAAJ&hl=ko&oi=ao">Google Scholar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <div>Copyright Ⓒ User-centered SEcurity Lab. @ Korea University Sejong Campus. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+
 </body>
 </html>

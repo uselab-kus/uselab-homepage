@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="stanford">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>USELab — News</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a class="brand" href="index.html">USELab @ KUS</a>
+  </div>
+</header>
+
+<main class="container">
+
+<section class="section">
+  <h2>All News</h2>
+
+  <ul class="news-list" id="all-news"></ul>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <div>Copyright Ⓒ User-centered SEcurity Lab. @ Korea University Sejong Campus. All Rights Reserved.</div>
+  </div>
+</footer>
+
+<script src="news-data.js"></script>
+<script>
+  const allContainer = document.getElementById("all-news");
+
+  NEWS.forEach(item => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <span class="news-date">${item.date}</span>
+      <span class="news-title">${item.title}</span>
+    `;
+    allContainer.appendChild(li);
+  });
+
+  document.getElementById("y").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
