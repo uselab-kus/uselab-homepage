@@ -5,13 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Graduate Students — USELab</title>
   <link rel="stylesheet" href="../style.css">
-  <style>
-    .member-card-vertical img {
-      width: 200px;
-      height: 250px;
-      object-fit: cover;
-    }
-  </style>
 </head>
 <body>
 
@@ -33,7 +26,7 @@
     <img src="images/jeonil.png" alt="Jeonil Ji">
     <div>
       <h3>Jeonil Ji</h3>
-      <p>M.S. Student</p>
+      <p class="member-status">M.S. Student (Spring 2025–)</p>
       <p class="member-email">Email: jeonil@korea.ac.kr</p>
       <p><strong>Research interest</strong>: Software Security, Software fuzzing</p>
     </div>
@@ -43,7 +36,7 @@
     <img src="images/seongyeol.jpg" alt="Seongyeol Oh">
     <div>
       <h3>Seongyeol Oh</h3>
-      <p>Ph.D. Student (part-time)</p>
+      <p class="member-status">Ph.D. Student, Part-time (Spring 2025–)</p>
       <p class="member-email">Email: XXXXX@korea.ac.kr</p>
     </div>
   </div>
@@ -52,7 +45,7 @@
     <img src="images/dohyun.png" alt="Dohyun Kwak">
     <div>
       <h3>Dohyun Kwak</h3>
-      <p>M.S. Student</p>
+      <p class="member-status">M.S. Student (Spring 2026–)</p>
       <p class="member-email">Email: kwakdohyun99@korea.ac.kr</p>
       <p><strong>Research interest</strong>: AI Security, Deepfake Detection</p>
     </div>
@@ -62,9 +55,9 @@
     <img src="images/youngbok.png" alt="YoungBok Jo">
     <div>
       <h3>YoungBok Jo</h3>
-      <p>M.S. Student</p>
+      <p class="member-status">M.S. Student (Spring 2026–)</p>
       <p class="member-email">Email: youngbokjo@korea.ac.kr</p>
-      <p><strong>Research interest</strong>: Network Security, Anomally Detection</p>
+      <p><strong>Research interest</strong>: Network Security, Anomaly Detection</p>
     </div>
   </div>
   
@@ -110,9 +103,10 @@
 
 <footer class="site-footer">
   <div class="container footer-row">
-    <div>Copyright Ⓒ User-centered SEcurity Lab. @ Korea University Sejong Campus. All Rights Reserved.</div>
+    <div style="width: 100%; text-align: center;">Copyright © <span id="y"></span> User-centered SEcurity Lab. @ Korea University Sejong Campus. All Rights Reserved.</div>
   </div>
 </footer>
+
 
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();

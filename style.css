@@ -323,9 +323,22 @@ body {
 }
 
 .member-email {
-  color: var(--muted);
+  color: #000000;
   font-size: 15px;
 }
+
+.member-card-vertical img {
+  width: 200px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.member-status {
+  color: #000000;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
 
 /* ==============================
    NEWS SECTION
