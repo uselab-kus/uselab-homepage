@@ -65,6 +65,70 @@
     .hero {
       border-bottom: none;
     }
+
+    /* --- Table & Typography Improvements --- */
+    .table {
+      table-layout: fixed; /* 컬럼 너비 고정 */
+    }
+    /* Desktop Column Widths */
+    .col-date { width: 130px; }
+    .col-speaker { width: 160px; }
+    .col-venue { width: 120px; }
+    /* Title takes remaining space */
+
+    /* Cell Typography */
+    .td-date { font-weight: 600; color: var(--muted); font-size: 0.95rem; }
+    .td-speaker { font-weight: 700; color: var(--text); }
+    .td-title { font-weight: 500; text-align: left !important; line-height: 1.5; }
+    .td-venue { font-size: 0.9rem; }
+
+    /* --- Mobile Card View --- */
+    @media (max-width: 768px) {
+      .seminar-card {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+      .seminar-card .table-responsive {
+        overflow: visible;
+      }
+      .seminar-card .table thead { display: none; } /* 헤더 숨김 */
+      
+      .seminar-card .table tbody, 
+      .seminar-card .table tr, 
+      .seminar-card .table td { display: block; width: 100%; }
+      
+      .seminar-card .table tr {
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
+        padding: 20px;
+      }
+      
+      .seminar-card .table td { padding: 4px 0; border: none; text-align: left !important; }
+      
+      /* Mobile: Hide original date cell (to handle rowspan issues) */
+      .td-date { display: none !important; }
+      
+      /* Mobile: Show date using pseudo-element from data attribute */
+      .seminar-card .table tr::before {
+        content: attr(data-display-date);
+        order: 1;
+        font-weight: 600;
+        color: #5b5b5b; /* var(--muted) */
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+
+      .td-speaker { order: 2; font-size: 1.1rem; margin-bottom: 6px; }
+      .td-title { order: 3; font-size: 1.15rem; font-weight: 600; margin-bottom: 15px; }
+      .td-venue { order: 4; }
+      .btn-venue { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -91,33 +155,6 @@
     <p class="lead">Weekly paper review schedule and records.</p>
   </section>
 
-  <!-- 섹션 1: 점수판 -->
-  <section id="score-board" class="seminar-section">
-    <div class="seminar-header">
-      <h2>Score Board</h2>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="show-retired-toggle">
-        <label class="form-check-label" for="show-retired-toggle">Show Retired</label>
-      </div>
-    </div>
-    <div class="seminar-card">
-      <div class="table-responsive">
-        <table class="table table-hover text-center align-middle">
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Main Presenter Score</th>
-            <th>Opponent Score</th>
-          </tr>
-        </thead>
-        <tbody id="score-body">
-          <!-- JS가 여기에 내용을 채움 -->
-        </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
   <!-- SECTION 2: Upcoming Seminars -->
   <section id="upcoming-seminars" class="seminar-section">
     <div class="seminar-header">
@@ -125,14 +162,13 @@
     </div>
     <div class="seminar-card">
       <div class="table-responsive">
-        <table class="table table-hover align-middle text-center">
+        <table class="table table-hover align-middle">
           <thead>
           <tr>
-            <th style="width: 15%">Date</th>
-            <th style="width: 15%">Main</th>
-            <th style="width: 15%">Opponent</th>
-            <th>Paper Title</th>
-            <th style="width: 10%">Link</th>
+            <th class="col-date text-center">Date</th>
+            <th class="col-speaker text-center">Speaker</th>
+            <th class="text-center">Paper Title</th>
+            <th class="col-venue text-center">Venue</th>
           </tr>
         </thead>
         <tbody id="upcoming-body">
@@ -161,14 +197,13 @@
 
     <div class="seminar-card">
       <div class="table-responsive">
-        <table class="table table-hover align-middle text-center">
+        <table class="table table-hover align-middle">
           <thead>
           <tr>
-            <th style="width: 15%">Date</th>
-            <th style="width: 15%">Main</th>
-            <th style="width: 15%">Opponent</th>
-            <th>Paper Title</th>
-            <th style="width: 10%">Link</th>
+            <th class="col-date text-center">Date</th>
+            <th class="col-speaker text-center">Speaker</th>
+            <th class="text-center">Paper Title</th>
+            <th class="col-venue text-center">Venue</th>
           </tr>
         </thead>
         <tbody id="past-body">
@@ -200,7 +235,6 @@
 
   // Store data globally for filtering
   let storedSeminars = [];
-  let storedRetired = new Set();
 
   // Load Data on Startup
   document.addEventListener('DOMContentLoaded', loadSeminars);
@@ -212,10 +246,6 @@
   
   document.getElementById('speaker-filter').addEventListener('change', () => {
     renderSeminarList(storedSeminars);
-  });
-
-  document.getElementById('show-retired-toggle').addEventListener('change', () => {
-    renderScoreBoard();
   });
 
   // Hover effect for rowspan date cells
@@ -239,14 +269,11 @@
       const response = await fetch(SHEET_URL);
       const csvText = await response.text();
 
-      const parsedData = parseCSV(csvText);
-      storedSeminars = parsedData.seminars;
-      storedRetired = parsedData.retired;
+      storedSeminars = parseCSV(csvText);
 
       updateYearFilter(storedSeminars);
       updateSpeakerFilter(storedSeminars);
       renderSeminarList(storedSeminars);
-      renderScoreBoard();
     } catch (err) {
       console.error("Failed to load seminar data", err);
     }
@@ -290,7 +317,6 @@
     }
 
     const seminars = [];
-    const retired = new Set();
 
     // Start from 1 to skip header
     for (let i = 1; i < rows.length; i++) {
@@ -299,40 +325,24 @@
       
       // Date 컬럼에서 'dodge' 또는 'retired' 키워드 확인
       if (dateStr.toLowerCase() === 'dodge' || dateStr.toLowerCase() === 'retired') {
-        const names = (sanitize(cols[1]) + ',' + sanitize(cols[2])).split(',');
-        names.forEach(n => {
-          const name = n.trim();
-          if (name && name !== '-') retired.add(name);
-        });
         continue;
       }
 
       seminars.push({
         date: dateStr,
-        main: sanitize(cols[1]),
-        opponent: sanitize(cols[2]),
-        title: sanitize(cols[3]),
-        paper_link: sanitize(cols[4])
+        speaker: sanitize(cols[1]),
+        title: sanitize(cols[2]),
+        venue: sanitize(cols[3])
       });
     }
 
-    return { seminars, retired };
+    return seminars;
   }
 
   // 기본 데이터 정제 (공백 제거 및 문자열 변환)
   function sanitize(str) {
     if (!str) return "";
     return String(str).trim();
-  }
-
-  function safeUrl(url) {
-    try {
-      const u = new URL(url);
-      if (u.protocol === "http:" || u.protocol === "https:") {
-        return url;
-      }
-    } catch(e) {}
-    return "#";
   }
 
   function updateYearFilter(seminars) {
@@ -369,15 +379,11 @@
 
     const speakers = new Set();
     seminars.forEach(s => {
-      const addNames = (str) => {
-        if (!str) return;
-        str.split(',').forEach(n => {
-          const name = n.trim();
-          if (name && name !== '-') speakers.add(name);
-        });
-      };
-      addNames(s.main);
-      addNames(s.opponent);
+      if (!s.speaker) return;
+      s.speaker.split(',').forEach(n => {
+        const name = n.trim();
+        if (name && name !== '-') speakers.add(name);
+      });
     });
 
     const sortedSpeakers = Array.from(speakers).sort();
@@ -421,9 +427,8 @@
         // 지난 세미나 필터 로직
         let matchSpeaker = true;
         if (speakerValue !== 'all') {
-          const mains = s.main ? s.main.split(',').map(n => n.trim()) : [];
-          const opps = s.opponent ? s.opponent.split(',').map(n => n.trim()) : [];
-          if (!mains.includes(speakerValue) && !opps.includes(speakerValue)) matchSpeaker = false;
+          const speakers = s.speaker ? s.speaker.split(',').map(n => n.trim()) : [];
+          if (!speakers.includes(speakerValue)) matchSpeaker = false;
         }
 
         if (matchSpeaker) {
@@ -445,15 +450,16 @@
     upcoming.sort((a, b) => new Date(a.date) - new Date(b.date));
     past.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    // 렌더링 헬퍼 함수 (Rowspan 적용)
+    // 렌더링 헬퍼 함수 (Rowspan 복구 + 모바일 호환)
     const renderTableRows = (tbody, list, sectionId) => {
       tbody.innerHTML = "";
       for (let i = 0; i < list.length; i++) {
         const s = list[i];
         const tr = document.createElement("tr");
         
-        // 호버 효과를 위한 데이터 속성
+        // 호버 효과 및 모바일 표시를 위한 데이터 속성
         tr.dataset.date = s.date;
+        tr.dataset.displayDate = s.date.replace(/-/g, '.'); // 모바일용 표시 날짜
         tr.dataset.section = sectionId;
 
         // Date Cell (Rowspan logic)
@@ -465,57 +471,38 @@
             else break;
           }
           const dateTd = document.createElement("td");
+          dateTd.className = "td-date text-center";
           dateTd.textContent = s.date.replace(/-/g, '.');
           dateTd.id = `date-cell-${sectionId}-${s.date}`;
           if (span > 1) dateTd.rowSpan = span;
           tr.appendChild(dateTd);
         }
 
-        const main = document.createElement("td");
-        if (s.main) {
-          const names = s.main.split(',');
-          names.forEach((n, idx) => {
-            const span = document.createElement('span');
-            span.textContent = n.trim();
-            main.appendChild(span);
-            if (idx < names.length - 1) main.appendChild(document.createTextNode(', '));
-          });
-        } else {
-          main.textContent = "-";
-        }
-        tr.appendChild(main);
-
-        const opponent = document.createElement("td");
-        if (s.opponent) {
-          const names = s.opponent.split(',');
-          names.forEach((n, idx) => {
-            const span = document.createElement('span');
-            span.textContent = n.trim();
-            opponent.appendChild(span);
-            if (idx < names.length - 1) opponent.appendChild(document.createTextNode(', '));
-          });
-        } else {
-          opponent.textContent = "-";
-        }
-        tr.appendChild(opponent);
+        const speakerTd = document.createElement("td");
+        speakerTd.className = "td-speaker text-center";
+        speakerTd.textContent = s.speaker || "-";
+        tr.appendChild(speakerTd);
 
         const title = document.createElement("td");
+        title.className = "td-title";
         title.textContent = s.title;
         tr.appendChild(title);
 
-        const linkCell = document.createElement("td");
-        if (s.paper_link) {
-          const a = document.createElement("a");
-          a.href = safeUrl(s.paper_link);
+        const venueTd = document.createElement("td");
+        venueTd.className = "td-venue text-center";
+        
+        // URL 감지하여 버튼으로 변환
+        if (s.venue && (s.venue.startsWith('http://') || s.venue.startsWith('https://'))) {
+          const a = document.createElement('a');
+          a.href = s.venue;
           a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          a.className = "text-decoration-none fw-bold";
-          a.textContent = "Link";
-          linkCell.appendChild(a);
+          a.className = "btn btn-sm btn-outline-primary btn-venue";
+          a.textContent = "Paper Link";
+          venueTd.appendChild(a);
         } else {
-          linkCell.textContent = "-";
+          venueTd.textContent = s.venue || "-";
         }
-        tr.appendChild(linkCell);
+        tr.appendChild(venueTd);
 
         tbody.appendChild(tr);
       }
@@ -529,72 +516,6 @@
     }
 
     renderTableRows(pastBody, past, 'past');
-  }
-
-  function renderScoreBoard() {
-    const seminars = storedSeminars;
-    const retiredSet = storedRetired;
-    const showRetired = document.getElementById('show-retired-toggle').checked;
-    const scores = {};
-
-    seminars.forEach(s => {
-      // Helper to process names (comma separated, ignore '-')
-      const processNames = (str, type) => {
-        if (!str) return;
-        const names = str.split(',').map(n => n.trim());
-        names.forEach(name => {
-          if (!name || name === '-') return; // 빈 값 또는 플레이스홀더 건너뛰기
-          
-          if (!scores[name]) scores[name] = { main: 0, opponent: 0 };
-          scores[name][type]++;
-        });
-      };
-
-      processNames(s.main, 'main');
-      processNames(s.opponent, 'opponent');
-    });
-
-    const tbody = document.getElementById("score-body");
-    tbody.innerHTML = "";
-
-    // 점수판 정렬 (활동 합계 내림차순) - UX를 위해 정렬 로직 유지
-    const sortedEntries = Object.entries(scores).sort(([, a], [, b]) => {
-      const totalA = a.main + a.opponent;
-      const totalB = b.main + b.opponent;
-      return totalB - totalA;
-    });
-
-    sortedEntries.forEach(([name, score]) => {
-      if (!showRetired && retiredSet && retiredSet.has(name)) return;
-
-      const tr = document.createElement("tr");
-
-      const nameTd = document.createElement("td");
-      const nameSpan = document.createElement("span");
-      nameSpan.textContent = name;
-      nameTd.appendChild(nameSpan);
-
-      if (retiredSet && retiredSet.has(name)) {
-        const retiredSpan = document.createElement("span");
-        retiredSpan.className = "text-muted small ms-1";
-        retiredSpan.textContent = "(retired)";
-        nameTd.appendChild(retiredSpan);
-      }
-
-      tr.appendChild(nameTd);
-
-      const mainTd = document.createElement("td");
-      mainTd.textContent = score.main;
-
-      const oppTd = document.createElement("td");
-      oppTd.textContent = score.opponent;
-
-      tr.appendChild(nameTd);
-      tr.appendChild(mainTd);
-      tr.appendChild(oppTd);
-
-      tbody.appendChild(tr);
-    });
   }
 </script>
 
