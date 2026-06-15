@@ -2,6 +2,11 @@
 
 const NEWS = [
   {
+    date: "2026.06",
+    title: "Congratulations to Junil! His paper has been accepted for publication in Journal of Information Security and Applications.",
+    tag: "Paper"
+  },
+  {
     date: "2026.04",
     title: "국가보안기술연구소(NSR) 위탁연구과제 선정 (거대언어모델 기반 임베디드‧IoT 기기 펌웨어 안전성 분석 보조기술 개발)",
     tag: "Grant"
@@ -48,7 +53,7 @@ const NEWS = [
   },
   {
     date: "2024.09",
-    title: "Jeonil Ji joined USELab.",
+    title: "Junil Ji joined USELab.",
     tag: "Members"
   }
 ];
