@@ -8,7 +8,7 @@ const NEWS = [
   },
   {
     date: "2026.06",
-    title: "Congratulations to <strong>Junil</strong>! His paper has been accepted for publication in <strong>Journal of Information Security and Applications</strong>.",
+    title: "Congratulations to <strong>Junil Ji</strong>! His paper has been accepted for publication in <strong>Journal of Information Security and Applications</strong>.",
     tag: "Paper"
   },
   {
@@ -18,17 +18,17 @@ const NEWS = [
   },
   {
     date: "2025.11",
-    title: "YoungBok Jo joined USELab.",
+    title: "<strong>YoungBok Jo</strong> joined USELab.",
     tag: "Members"
   },
   {
     date: "2025.10",
-    title: "Jeongyun Lee joined USELab.",
+    title: "<strong>Jeongyun Lee</strong> joined USELab.",
     tag: "Members"
   },
   {
     date: "2025.09",
-    title: "Dohyun Kwak joined USELab.",
+    title: "<strong>Dohyun Kwak</strong> joined USELab.",
     tag: "Members"
   },
   {
@@ -43,7 +43,7 @@ const NEWS = [
   },
   {
     date: "2025.04",
-    title: "Heeji Yang joined USELab.",
+    title: "<strong>Heeji Yang</strong> joined USELab.",
     tag: "Members"
   },
   {
@@ -53,12 +53,12 @@ const NEWS = [
   },
   {
     date: "2025.03",
-    title: "Seongyeol Oh joined USELab.",
+    title: "<strong>Seongyeol Oh</strong> joined USELab.",
     tag: "Members"
   },
   {
     date: "2024.09",
-    title: "Junil Ji joined USELab.",
+    title: "<strong>Junil Ji</strong> joined USELab.",
     tag: "Members"
   }
 ];
