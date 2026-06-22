@@ -58,7 +58,7 @@ const NEWS = [
   },
   {
     date: "2024.09",
-    title: "<strong>Junil Ji</strong> joined USELab.",
+    title: "<strong>Jeonil Ji</strong> joined USELab.",
     tag: "Members"
   }
 ];
