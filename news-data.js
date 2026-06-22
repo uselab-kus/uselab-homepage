@@ -8,7 +8,7 @@ const NEWS = [
   },
   {
     date: "2026.06",
-    title: "Congratulations to <strong>Junil Ji</strong>! His paper has been accepted for publication in <strong>Journal of Information Security and Applications</strong>.",
+    title: "Congratulations to <strong>Jeonil Ji</strong>! His paper has been accepted for publication in <strong>Journal of Information Security and Applications</strong>.",
     tag: "Paper"
   },
   {
