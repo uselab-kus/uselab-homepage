@@ -16,6 +16,10 @@ html[data-theme="stanford"] {
   --font-body: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 * { box-sizing: border-box; }
 
 body {
@@ -28,6 +32,9 @@ body {
 .container {
   width: min(var(--max), calc(100% - 40px));
   margin: 0 auto;
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .site-header {
@@ -35,11 +42,14 @@ body {
   top: 0;
   background: rgba(255,255,255,0.95);
   border-bottom: 1px solid var(--border);
+  z-index: 10;
 }
 
 .header-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 24px;
   padding: 14px 0;
 }
 
@@ -47,13 +57,24 @@ body {
   text-decoration: none;
   font-weight: 800;
   color: var(--text);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 
 .nav a {
-  margin-left: 18px;
   text-decoration: none;
   color: var(--muted);
   font-weight: 600;
+  line-height: 1.2;
+  padding: 2px 0 4px;
+  border-bottom: 2px solid transparent;
 }
 
 .nav a.active {
