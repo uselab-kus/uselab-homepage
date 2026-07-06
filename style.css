@@ -61,6 +61,20 @@ body {
   white-space: nowrap;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  display: block;
+}
+
+
 .nav {
   display: flex;
   align-items: center;
