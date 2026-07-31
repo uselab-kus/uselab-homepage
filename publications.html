@@ -144,7 +144,9 @@
     .pub-content {
       grid-area: content;
       display: flex;
-      min-width: 0;
+      /* 오른쪽 콘텐츠만 왼쪽으로 20px 확장 */
+      margin-left: -20px;
+      /* min-width: 0; */
       flex-direction: column;
       justify-content: center;
     }
