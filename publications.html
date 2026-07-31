@@ -71,7 +71,7 @@
       
       /* 왼쪽 약 18%, 나머지는 오른쪽 콘텐츠 */
       grid-template-columns:
-      minmax(190px, 18%)
+      minmax(190px, 10%)
       minmax(0, 1fr);
       
       grid-template-rows: auto auto;
@@ -150,8 +150,8 @@
       grid-area: content;
       display: flex;
       /* 오른쪽 콘텐츠만 왼쪽으로 20px 확장 */
-      margin-left: -80px;
-      /* min-width: 0; */
+      /* margin-left: -80px; */
+      min-width: 0;
       flex-direction: column;
       justify-content: center;
     }
@@ -199,7 +199,8 @@
       display: flex;
       margin-top: 22px;
       /* 하단 날짜·등급·링크도 동일하게 이동 */
-      margin-left: -80px;
+      /* margin-left: -80px; */
+      min-width: 0;
       padding-top: 18px;
       align-items: center;
       gap: 18px;
