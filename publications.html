@@ -2,606 +2,1217 @@
 <html lang="en" data-theme="stanford">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>USELab — Publications</title>
   <link rel="stylesheet" href="style.css" />
-  
+
+  <style>
+    .pub-tabs {
+      display: inline-flex;
+      gap: 8px;
+      margin: 0 0 42px;
+      padding: 6px;
+      border: 1px solid #e6e1dc;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 8px 28px rgba(42, 34, 31, 0.05);
+    }
+
+    .pub-tab {
+      display: inline-flex;
+      min-height: 46px;
+      padding: 0 20px;
+      align-items: center;
+      border: 0;
+      border-radius: 999px;
+      color: #6f6964;
+      background: transparent;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pub-tab[aria-selected="true"] {
+      color: #fff;
+      background: #24201e;
+      box-shadow: 0 5px 16px rgba(20, 18, 17, 0.17);
+    }
+
+    .pub-tab:focus-visible {
+      outline: 2px solid #8c1515;
+      outline-offset: 3px;
+    }
+
+    .pub-year {
+      display: flex;
+      margin: 34px 0 18px;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .pub-year::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: #e6e1dc;
+    }
+
+    .pubs .pub-list {
+      margin: 0 0 14px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pubs .pub-list > li {
+      display: grid;
+      min-height: 260px;
+      padding: 34px 38px;
+      grid-template-columns: 235px minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "meta content"
+        "meta footer";
+      column-gap: 40px;
+      border: 1px solid #e6e1dc;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 12px 34px rgba(37, 28, 24, 0.055);
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+    }
+
+    .pubs .pub-list > li:hover {
+      transform: translateY(-3px);
+      border-color: #d8d0ca;
+      box-shadow: 0 18px 42px rgba(37, 28, 24, 0.09);
+    }
+
+    .pubs .pub-list > li[hidden],
+    .pub-year[hidden] {
+      display: none;
+    }
+
+    .pub-left {
+      grid-area: meta;
+      display: flex;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 8px 40px 8px 0;
+      align-items: flex-start;
+      align-content: flex-start;
+      flex-direction: column;
+      gap: 10px;
+      border-right: 1px solid #e6e1dc;
+    }
+
+    .pub-left .pub-no {
+      margin: 0 0 18px;
+      color: #9a948f;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .pub-left .pub-region {
+      display: none;
+    }
+
+    .pub-left .pub-type {
+      align-self: flex-end;
+      width: auto;
+      height: auto;
+      padding: 9px 14px;
+      border-radius: 999px;
+      color: #963a33;
+      background: #f7ebe9;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .pub-left .pub-type.is-conference {
+      color: #675425;
+      background: #f4efdf;
+    }
+
+    .pub-content {
+      grid-area: content;
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .pub-card-title {
+      margin: 0;
+      padding: 0 0 22px;
+      color: #191716;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(22px, 2vw, 29px);
+      font-weight: 700;
+      line-height: 1.28;
+      letter-spacing: -0.025em;
+    }
+
+    .pub-card-details {
+      display: grid;
+      padding-top: 22px;
+      grid-template-columns:
+        minmax(210px, 0.75fr)
+        minmax(300px, 1.25fr);
+      gap: 40px;
+      border-top: 1px solid #e6e1dc;
+      color: #514c48;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .pub-detail-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #9a948f;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+    }
+
+    .pub-card-authors strong {
+      color: #302d2a;
+    }
+
+    .pub-card-link {
+      grid-area: footer;
+      display: flex;
+      margin-top: 22px;
+      padding-top: 18px;
+      align-items: center;
+      gap: 18px;
+      border-top: 1px solid #e6e1dc;
+    }
+
+    .pub-card-date {
+      color: #383432;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .pub-card-note {
+      color: #9a948f;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .pub-card-link .pub-link {
+      display: inline;
+      margin-left: auto;
+      padding: 0;
+      border: 0;
+      color: #8c1515;
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .pub-card-link .pub-link::after {
+      content: "↗";
+      margin-left: 7px;
+    }
+
+    @media (max-width: 760px) {
+      .pub-tabs {
+        display: flex;
+      }
+
+      .pub-tab {
+        flex: 1;
+        justify-content: center;
+        padding: 0 14px;
+      }
+
+      .pubs .pub-list > li {
+        display: block;
+        min-height: 0;
+        padding: 23px;
+      }
+
+      .pub-left {
+        width: 100%;
+        margin-bottom: 16px;
+        padding: 0;
+        align-items: center;
+        flex-direction: row;
+        border-right: 0;
+      }
+
+      .pub-left .pub-no {
+        margin: 0 auto 0 0;
+      }
+
+      .pub-left .pub-type {
+        align-self: auto;
+      }
+
+      .pub-card-title {
+        font-size: 23px;
+      }
+
+      .pub-card-details {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .pub-card-link {
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .pub-card-note {
+        order: 3;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="index.html">
+        <img
+          src="assets/USE_logo_crimson.png"
+          alt="USELab logo"
+          class="brand-logo"
+        />
+        <span>USELab @ KUS</span>
+      </a>
 
-<header class="site-header">
-  <div class="container header-row">
-    <a class="brand" href="index.html">
-      <img src="assets/USE_logo_crimson.png" alt="USELab logo" class="brand-logo" />
-      <span>USELab @ KUS</span>
-    </a>
-    <nav class="nav">
-      <a href="members.html">Members</a>
-      <a class="active" href="publications.html">Publications</a>
-      <a href="research.html">Research</a>
-      <a href="seminars.html">Seminar</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </div>
-</header>
-
-<main class="container">
-
-<section class="hero">
-  <div class="kicker">Publications</div>
-  <h1>Publication list</h1>
-</section>
-
-<section class="section pubs">
-
-<p class="pub-legend">
-  <span class="pub-type">J</span> Journal
-  <span class="pub-type">C</span> Conference / Workshop
-  <span class="pub-region pub-int">INT</span> International
-  <span class="pub-region pub-dom">DOM</span> Domestic
-</p>
-
-
-<!-- 2026 -->
-<h2 class="pub-year">2026</h2>
-
-<ul class="pub-list">  
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[6]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
+      <nav class="nav">
+        <a href="members.html">Members</a>
+        <a class="active" href="publications.html">Publications</a>
+        <a href="research.html">Research</a>
+        <a href="seminars.html">Seminar</a>
+        <a href="contact.html">Contact</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="pub-content">
-      "Wireless Signal Fingerprinting Framework Based on Emphasized Spectral Features for IoT Device Authentication",
-      Hyeon Park, <strong>Geumhwan Cho</strong>, TaeGuen Kim,
-      Mathematics, Volume 14, Issue 13, Pages 2321, July 2026 (SCIE; Top 6% in Mathematics - JCR 2024).
-      <a class="pub-link" href="https://doi.org/10.3390/math14132321">link</a> 
+  <main class="container">
+    <section class="hero">
+      <div class="kicker">Publications</div>
+      <h1>Publication list</h1>
+    </section>
+
+    <section class="section pubs">
+      <div
+        class="pub-tabs"
+        role="tablist"
+        aria-label="Publication category"
+      >
+        <button
+          class="pub-tab"
+          type="button"
+          role="tab"
+          aria-selected="true"
+          data-filter="INT"
+        >
+          International
+        </button>
+
+        <button
+          class="pub-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
+          data-filter="DOM"
+        >
+          Domestic
+        </button>
+      </div>
+
+      <!-- 2026 -->
+      <h2 class="pub-year">2026</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[6]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Wireless Signal Fingerprinting Framework Based on Emphasized
+            Spectral Features for IoT Device Authentication",
+            Hyeon Park, <strong>Geumhwan Cho</strong>, TaeGuen Kim,
+            Mathematics, Volume 14, Issue 13, Pages 2321, July 2026
+            (SCIE; Top 6% in Mathematics - JCR 2024).
+            <a
+              class="pub-link"
+              href="https://doi.org/10.3390/math14132321"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[5]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Selective Encryption of Sensitive Fields in Structured Logs:
+            Quantifying Security–Utility–Performance Tradeoffs",
+            <strong>Jeonil Ji</strong>, Youngbae Song,
+            <strong>Geumhwan Cho</strong>,
+            Journal of Information Security and Applications, Volume 101,
+            Article 104550, 2026. (SCIE; Q2 in Computer Science,
+            Information Systems - JCR 2024).
+            <a
+              class="pub-link"
+              href="https://www.sciencedirect.com/science/article/pii/S2214212626001808?dgcid=coauthor"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[4]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Attack-Level Failure Analysis of Invariant-Rule-Based Anomaly
+            Detection in Industrial Control Systems",
+            <strong>Geumhwan Cho</strong>,
+            Mathematics, Volume 14, Issue 11, Pages 2016, June 2026
+            (SCIE; Top 6% in Mathematics - JCR 2024).
+            <a
+              class="pub-link"
+              href="https://doi.org/10.3390/math14112016"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[3]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-dom">DOM</span>
+          </div>
+
+          <div class="pub-content">
+            "CodeQL 기반 Python-C/C++ 확장 패키지 cross-language 취약점 탐지
+            프레임워크",
+            <strong>지전일</strong>, <strong>양희지</strong>,
+            <strong>조금환</strong>,
+            2026년 한국정보보호학회 하계학술대회(CISC-S'26), May 2026.
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[2]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-dom">DOM</span>
+          </div>
+
+          <div class="pub-content">
+            "스트립 바이너리에서 보안 취약점 탐지를 위한 LLM 기반 프레임워크",
+            최영호, <strong>조금환</strong>, 최두호,
+            Journal of The Korea Institute of Information Security &amp;
+            Cryptology(한국정보보호학회논문지), vol.36, no.1,
+            pp. 127-138, February 2026.
+            <a
+              class="pub-link"
+              href="https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003304302"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "An Automated Synthesis Framework for Benchmarking Quantum
+            Resource Costs of Symmetric-Key Cryptography",
+            Chanho Choi, Jinseob Oh, SangMan Lee,
+            <strong>Geumhwan Cho</strong>, Dooho Choi,
+            Mathematics, Volume 14, Issue 4, Pages 719, February 2026
+            (SCIE; Top 6% in Mathematics - JCR 2024).
+            <a
+              class="pub-link"
+              href="https://doi.org/10.3390/math14040719"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2025 -->
+      <h2 class="pub-year">2025</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[2]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "LLM-based Detection Framework of Memory Vulnerabilities in
+            Stripped Binaries",
+            Youngho Choi, <strong>Geumhwan Cho</strong>, and Dooho Choi,
+            Mobisec: The 9th International Conference on Mobile Internet
+            Security (Poster), 2026.
+          </div>
+        </li>
+
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-dom">DOM</span>
+          </div>
+
+          <div class="pub-content">
+            "다크웹 CAPTCHA에 대한 CNN 기반 문자 인식 연구",
+            장예진, 전주혁, 한지훈, 김다슬, 박영진, 류성욱,
+            <strong>조금환</strong>, 한미란,
+            Journal of The Korea Institute of Information Security &amp;
+            Cryptology(한국정보보호학회논문지), vol.35, no.6,
+            pp. 1469-1480, December 2025.
+            <a
+              class="pub-link"
+              href="https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003276320"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2024 -->
+      <h2 class="pub-year">2024</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-dom">DOM</span>
+          </div>
+
+          <div class="pub-content">
+            "생성형 AI 기반 난독화 기법 적용 자동화 프레임워크 설계",
+            한지훈, 박승아, 하준서, 이창민, 정경미, 한미란, 김준섭,
+            <strong>조금환</strong>,
+            Journal of The Korea Society of Computer and
+            Information(한국컴퓨터정보학회논문지), Vol. 30 No. 1,
+            pp. 73-85, January 2025.
+            <a
+              class="pub-link"
+              href="https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003169017"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2023 -->
+      <h2 class="pub-year">2023</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "On the Long-Term Effects of Continuous Keystroke Authentication:
+            Keeping User Frustration Low through Behavior Adaptation",
+            Jun Ho Huh, Sungsu Kwag, Iljoo Kim, Alexandr Popov,
+            Younghan Park, <strong>Geumhwan Cho</strong>, Juwon Lee,
+            Hyoungshick Kim, and Choong-Hoon Lee,
+            UbiComp: Proceedings of the ACM on Interactive, Mobile, Wearable
+            and Ubiquitous Technologies, Cancun, Mexico, 2023
+            (<strong>CS Top conference</strong>, acceptance rate: 28%).
+            <a
+              class="pub-link"
+              href="https://dl.acm.org/doi/10.1145/3596236"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2021 -->
+      <h2 class="pub-year">2021</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Towards Usable and Secure Location-based Smartphone Authentication",
+            <strong>Geumhwan Cho</strong>, Sungsu Kwag, Jun Ho Huh,
+            Bedeuro Kim, Choong-Hoon Lee, and Hyoungshick Kim,
+            SOUPS: The 17th Symposium On Usable Privacy and Security,
+            Virtual, 2021
+            (<strong>CS Top conference</strong>,
+            acceptance rate: 36/136 = 26%).
+            <a
+              class="pub-link"
+              href="https://www.usenix.org/system/files/soups2021-cho.pdf"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2020 -->
+      <h2 class="pub-year">2020</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[2]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "On the Security and Usability Implications of Multiple
+            Authentication Choices on Smartphones: The More, the Better?",
+            <strong>Geumhwan Cho</strong>, Jun Ho Huh, Soolin Kim,
+            Junsung Cho, Heesung Park, Yenah Lee, Konstantin Beznosov,
+            and Hyoungshick Kim,
+            ACM Transactions on Privacy and Security, Volume 23,
+            Issue 4, Pages 1-32, August 2020 (SCIE; Q3).
+            <a
+              class="pub-link"
+              href="https://dl.acm.org/doi/10.1145/3410155"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "SENTINEL: A Secure and Efficient Authentication Framework for
+            Unmanned Aerial Vehicles",
+            <strong>Geumhwan Cho</strong>, Junsung Cho, Sangwon Hyun,
+            and Hyoungshick Kim,
+            Applied Sciences, Volume 10, Issue 9, Pages 3149,
+            April 2020 (SCIE; Q2).
+            <a
+              class="pub-link"
+              href="https://www.mdpi.com/2076-3417/10/9/3149"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2019 -->
+      <h2 class="pub-year">2019</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[2]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Understanding Users Risk Perceptions about Personal Health
+            Records Shared on Social Networking Services",
+            Yuri Son, <strong>Geumhwan Cho</strong>, Hyoungshick Kim,
+            and Simon S. Woo,
+            ASIACCS: The 12th ACM Asia Conference on Computer and
+            Communications Security, Auckland, New Zealand, 2019
+            (<strong>CS Top conference</strong>,
+            acceptance rate: 22.5%).
+            <a
+              class="pub-link"
+              href="https://dl.acm.org/doi/10.1145/3321705.3329838"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Data-driven Selection of Security Application Frameworks
+            During Architectural Design",
+            Humberto Cervantes, Rick Kazman, Jungwoo Ryoo, Junsung Cho,
+            <strong>Geumhwan Cho</strong>, Hyoungshick Kim, and Jina Kang,
+            HICSS: The 52nd Hawaii International Conference on System
+            Sciences, 2019.
+            <a
+              class="pub-link"
+              href="https://doi.org/10.24251/HICSS.2019.880"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2018 -->
+      <h2 class="pub-year">2018</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[4]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Two-Thumbs-Up: Physical Protection for PIN Entry Secure
+            against Recording Attacks",
+            DaeHun Nyang, Hyoungshick Kim, Woojoo Lee, Sung-bae Kang,
+            <strong>Geumhwan Cho</strong>, Mun-Kyu Lee, and Aziz Mohaisen,
+            Computers &amp; Security, Volume 78, Pages 1-15,
+            September 2018 (SCIE; Q2).
+            <a
+              class="pub-link"
+              href="https://doi.org/10.1016/j.cose.2018.05.012"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[3]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Threat modeling and analysis of voice assistant applications",
+            <strong>Geumhwan Cho</strong>, Jusop Choi, Hyoungshick Kim,
+            Sangwon Hyun, and Jungwoo Ryoo,
+            WISA: The 19th World Conference on Information Security
+            Applications, Jeju Island, Korea, 2018
+            (acceptance rate: 11/44 = 25%).
+            <a
+              class="pub-link"
+              href="https://link.springer.com/chapter/10.1007/978-3-030-17982-3_16"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[2]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "The Personal Identification Chord: A Four Button Authentication
+            System for Smartwatches",
+            Ian Oakley, Jun Ho Huh, Junsung Cho,
+            <strong>Geumhwan Cho</strong>, MD. Rasel Islam,
+            and Hyoungshick Kim,
+            ASIACCS: The 11th ACM Asia Conference on Computer and
+            Communications Security, Incheon, Korea, 2018
+            (<strong>CS Top conference</strong>,
+            acceptance rate: 52/310 = 17%).
+            <a
+              class="pub-link"
+              href="https://dl.acm.org/doi/abs/10.1145/3196494.3196555"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Design and Analysis of Push Notification-Based Malware on Android",
+            Sangwon Hyun, Junsung Cho, <strong>Geumhwan Cho</strong>,
+            and Hyoungshick Kim,
+            Security and Communication Networks, Volume 2018,
+            Article ID 8510256, 12 pages, July 2018 (SCIE; Q3).
+            <a
+              class="pub-link"
+              href="https://doi.org/10.1155/2018/8510256"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2017 -->
+      <h2 class="pub-year">2017</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Preventing DNS amplification attacks using the history of DNS
+            queries with SDN",
+            Soyoung Kim, Sora Lee, <strong>Geumhwan Cho</strong>,
+            Muhammad Ejaz Ahmed, Jaehoon Paul Jeong, and Hyoungshick Kim,
+            ESORICS: The 22nd European Symposium on Research in Computer
+            Security, Oslo, Norway, 2017
+            (<strong>CS Top conference</strong>,
+            acceptance rate: 54/339 = 16%).
+            <a
+              class="pub-link"
+              href="https://link.springer.com/chapter/10.1007/978-3-319-66399-9_8"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "SysPal: System-guided Pattern Locks on Android",
+            <strong>Geumhwan Cho</strong>, Jun Ho Huh, Junsung Cho,
+            Seongyeol Oh, Youngbae Song, and Hyoungshick Kim,
+            S&amp;P: The 38th IEEE Symposium on Security and Privacy,
+            San Jose, USA, 2017
+            (<strong>CS Top conference</strong>,
+            acceptance rate: 60/419 = 14.3%).
+            <a
+              class="pub-link"
+              href="https://ieeexplore.ieee.org/document/7958586"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2016 -->
+      <h2 class="pub-year">2016</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[2]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "WiPING: Wi-Fi signal-based PIN Guessing attack",
+            Seunghun Cha, Jaewoo Park, <strong>Geumhwan Cho</strong>,
+            Jun Ho Huh, and Hyoungshick Kim,
+            CCS: The 23rd ACM Conference on Computer and Communications
+            Security (Poster), Vienna, Austria, 2016.
+            <a
+              class="pub-link"
+              href="https://dl.acm.org/doi/10.1145/2976749.2989067"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">J</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Combating online fraud attacks in mobile-based advertising",
+            <strong>Geumhwan Cho</strong>, Junsung Cho, Youngbae Song,
+            Donghyun Choi, and Hyoungshick Kim,
+            EURASIP Journal on Information Security, Vol. 2016(1), 2016.
+            <a
+              class="pub-link"
+              href="https://link.springer.com/article/10.1186/s13635-015-0027-7"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 2015 -->
+      <h2 class="pub-year">2015</h2>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[4]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "An empirical study of click fraud in mobile advertising networks",
+            <strong>Geumhwan Cho</strong>, Junsung Cho, Youngbae Song,
+            and Hyoungshick Kim,
+            IWCC: The 4th Workshop on Cyber Crime held in conjunction
+            with ARES, Toulouse, France, 2015.
+            <a
+              class="pub-link"
+              href="https://ieeexplore.ieee.org/document/7299940"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[3]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "Keyboard or Keylogger?: A security analysis of third-party
+            keyboards on Android",
+            Junsung Cho, <strong>Geumhwan Cho</strong>,
+            and Hyoungshick Kim,
+            PST: The 13rd International Conference on Privacy, Security
+            and Trust, Izmir, Turkey, 2015.
+            <a
+              class="pub-link"
+              href="https://ieeexplore.ieee.org/document/7232970"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[2]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "On the Effectiveness of Pattern Lock Strength Meters – Measuring
+            the Strength of Real World Pattern Locks",
+            Youngbae Song, <strong>Geumhwan Cho</strong>, Seongyeol Oh,
+            Hyoungshick Kim, and Jun Ho Huh,
+            CHI: The 33rd ACM SIGCHI Conference on Human Factors in
+            Computing Systems, Seoul, Korea, 2015
+            (<strong>CS Top conference</strong>,
+            acceptance rate: 565/2435 = 23%).
+            <a
+              class="pub-link"
+              href="https://dl.acm.org/doi/10.1145/2702123.2702365"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="pub-list">
+        <li>
+          <div class="pub-left">
+            <span class="pub-no">[1]</span>
+            <span class="pub-type">C</span>
+            <span class="pub-region pub-int">INT</span>
+          </div>
+
+          <div class="pub-content">
+            "A Framework for Security Services Based on Software-Defined
+            Networking",
+            Jaehon Jeong, Jihyeok Seo, <strong>Geumhwan Cho</strong>,
+            Hyoungshick Kim and Jung-Soo Park,
+            DC2: The 2nd Workshop on Device Centric Cloud, 2015.
+            <a
+              class="pub-link"
+              href="https://ieeexplore.ieee.org/document/7096163"
+            >link</a>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <div style="width: 100%; text-align: center">
+        Copyright Ⓒ User-centered SEcurity Lab. @ Korea University
+        Sejong Campus. All Rights Reserved.
+      </div>
     </div>
-  </li>
-
-</ul> 
-
-<ul class="pub-list">  
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[5]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Selective Encryption of Sensitive Fields in Structured Logs: Quantifying Security–Utility–Performance Tradeoffs",
-      <strong>Jeonil Ji</strong>, Youngbae Song, <strong>Geumhwan Cho</strong>,
-      Journal of Information Security and Applications, Volume 101, Article 104550, 2026. (SCIE; Q2 in Computer Science, Information Systems - JCR 2024).
-      <a class="pub-link" href="https://www.sciencedirect.com/science/article/pii/S2214212626001808?dgcid=coauthor">link</a>
-    </div>
-  </li>
-
-</ul> 
-  
-<ul class="pub-list">  
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[4]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Attack-Level Failure Analysis of Invariant-Rule-Based Anomaly Detection in Industrial Control Systems",
-      <strong>Geumhwan Cho</strong>,
-      Mathematics, Volume 14, Issue 11, Pages 2016, June 2026 (SCIE; Top 6% in Mathematics - JCR 2024).
-      <a class="pub-link" href="https://doi.org/10.3390/math14112016">link</a>
-    </div>
-  </li>
-
-</ul> 
-  
-<ul class="pub-list">  
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[3]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-dom">DOM</span>
-    </div>
-
-    <div class="pub-content">
-      "CodeQL 기반 Python-C/C++ 확장 패키지 cross-language 취약점 탐지 프레임워크",
-      <strong>지전일</strong>, <strong>양희지</strong>, <strong>조금환</strong>,
-      2026년 한국정보보호학회 하계학술대회(CISC-S'26), May 2026.      
-    </div>
-  </li>
-
-</ul> 
-  
-<ul class="pub-list">  
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[2]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-dom">DOM</span>
-    </div>
-
-    <div class="pub-content">
-      "스트립 바이너리에서 보안 취약점 탐지를 위한 LLM 기반 프레임워크",
-      최영호, <strong>조금환</strong>, 최두호,
-      Journal of The Korea Institute of Information Security & Cryptology(한국정보보호학회논문지), vol.36, no.1, pp. 127-138, February 2026.
-      <a class="pub-link" href="https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003304302">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-<ul class="pub-list">  
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "An Automated Synthesis Framework for Benchmarking Quantum Resource Costs of Symmetric-Key Cryptography",
-      Chanho Choi, Jinseob Oh, SangMan Lee, <strong>Geumhwan Cho</strong>, Dooho Choi,
-      Mathematics, Volume 14, Issue 4, Pages 719, February 2026 (SCIE; Top 6% in Mathematics - JCR 2024).
-      <a class="pub-link" href="https://doi.org/10.3390/math14040719">link</a>
-    </div>
-  </li>
-
-</ul>
-  
-  
-<!-- 2025 -->
-<h2 class="pub-year">2025</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[2]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "LLM-based Detection Framework of Memory Vulnerabilities in Stripped Binaries",
-      Youngho Choi, <strong>Geumhwan Cho</strong>, and Dooho Choi,
-      Mobisec: The 9th International Conference on Mobile Internet Security (Poster), 2026.
-      <!-- <a class="pub-link" href="#">pdf</a> -->
-    </div>
-  </li>  
-  
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-dom">DOM</span>
-    </div>
-
-    <div class="pub-content">
-      "다크웹 CAPTCHA에 대한 CNN 기반 문자 인식 연구",
-      장예진, 전주혁, 한지훈, 김다슬, 박영진, 류성욱, <strong>조금환</strong>, 한미란,
-      Journal of The Korea Institute of Information Security & Cryptology(한국정보보호학회논문지), vol.35, no.6, pp. 1469-1480, December 2025.
-      <a class="pub-link" href="https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003276320">link</a>
-    </div>
-  </li>
-
-</ul> 
-  
-
-<!-- 2024 -->
-<h2 class="pub-year">2024</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-dom">DOM</span>
-    </div>
-
-    <div class="pub-content">
-      "생성형 AI 기반 난독화 기법 적용 자동화 프레임워크 설계",
-      한지훈, 박승아, 하준서, 이창민, 정경미, 한미란, 김준섭, <strong>조금환</strong>,
-      Journal of The Korea Society of Computer and Information(한국컴퓨터정보학회논문지), Vol. 30 No. 1, pp. 73-85, January 2025.
-      <a class="pub-link" href="https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003169017">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-  
-<!-- 2023 -->
-<h2 class="pub-year">2023</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "On the Long-Term Effects of Continuous Keystroke Authentication: Keeping User Frustration Low through Behavior Adaptation",
-      Jun Ho Huh, Sungsu Kwag, Iljoo Kim, Alexandr Popov, Younghan Park, <strong>Geumhwan Cho</strong>, Juwon Lee, Hyoungshick Kim, and Choong-Hoon Lee,
-      UbiComp: Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies, Cancun, Mexico, 2023 (<strong>CS Top conference</strong>, acceptance rate: 28%). 
-      <a class="pub-link" href="https://dl.acm.org/doi/10.1145/3596236">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-  
-<!-- 2021 -->
-<h2 class="pub-year">2021</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Towards Usable and Secure Location-based Smartphone Authentication",
-      <strong>Geumhwan Cho</strong>, Sungsu Kwag, Jun Ho Huh, Bedeuro Kim, Choong-Hoon Lee, and Hyoungshick Kim,
-      SOUPS: The 17th Symposium On Usable Privacy and Security, Virtual, 2021 (<strong>CS Top conference</strong>, acceptance rate: 36/136 = 26%).
-      <a class="pub-link" href="https://www.usenix.org/system/files/soups2021-cho.pdf">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-  
-<!-- 2020 -->
-<h2 class="pub-year">2020</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[2]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "On the Security and Usability Implications of Multiple Authentication Choices on Smartphones: The More, the Better?",
-      <strong>Geumhwan Cho</strong>, Jun Ho Huh, Soolin Kim, Junsung Cho, Heesung Park, Yenah Lee, Konstantin Beznosov, and Hyoungshick Kim,
-      ACM Transactions on Privacy and Security, Volume 23, Issue 4, Pages 1-32, August 2020 (SCIE; Q3).
-      <a class="pub-link" href="https://dl.acm.org/doi/10.1145/3410155">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "SENTINEL: A Secure and Efficient Authentication Framework for Unmanned Aerial Vehicles",
-      <strong>Geumhwan Cho</strong>, Junsung Cho, Sangwon Hyun, and Hyoungshick Kim,
-      Applied Sciences, Volume 10, Issue 9, Pages 3149, April 2020 (SCIE; Q2).
-      <a class="pub-link" href="https://www.mdpi.com/2076-3417/10/9/3149">link</a>
-    </div>
-  </li>
-
-</ul>  
-
-  
-<!-- 2019 -->
-<h2 class="pub-year">2019</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[2]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Understanding Users Risk Perceptions about Personal Health Records Shared on Social Networking Services",
-      Yuri Son, <strong>Geumhwan Cho</strong>, Hyoungshick Kim, and Simon S. Woo,
-      ASIACCS: The 12th ACM Asia Conference on Computer and Communications Security, Auckland, New Zealand, 2019 (<strong>CS Top conference</strong>, acceptance rate: 22.5%).
-      <a class="pub-link" href="https://dl.acm.org/doi/10.1145/3321705.3329838">link</a>
-    </div>
-  </li>
-
-</ul> 
-  
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Data-driven Selection of Security Application Frameworks During Architectural Design",
-      Humberto Cervantes, Rick Kazman, Jungwoo Ryoo, Junsung Cho, <strong>Geumhwan Cho</strong>, Hyoungshick Kim, and Jina Kang,
-      HICSS: The 52nd Hawaii International Conference on System Sciences, 2019. 
-      <a class="pub-link" href="https://doi.org/10.24251/HICSS.2019.880">link</a>
-    </div>
-  </li>
-
-</ul> 
-  
-
-<!-- 2018 -->
-<h2 class="pub-year">2018</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[4]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Two-Thumbs-Up: Physical Protection for PIN Entry Secure against Recording Attacks",
-      DaeHun Nyang, Hyoungshick Kim, Woojoo Lee, Sung-bae Kang, <strong>Geumhwan Cho</strong>, Mun-Kyu Lee, and Aziz Mohaisen,
-      Computers & Security, Volume 78, Pages 1-15, September 2018 (SCIE; Q2).
-      <a class="pub-link" href="https://doi.org/10.1016/j.cose.2018.05.012">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[3]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Threat modeling and analysis of voice assistant applications",
-      <strong>Geumhwan Cho</strong>, Jusop Choi, Hyoungshick Kim, Sangwon Hyun, and Jungwoo Ryoo,
-      WISA: The 19th World Conference on Information Security Applications, Jeju Island, Korea, 2018 (acceptance rate: 11/44 = 25%).
-      <a class="pub-link" href="https://link.springer.com/chapter/10.1007/978-3-030-17982-3_16">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[2]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "The Personal Identification Chord: A Four Button Authentication System for Smartwatches",
-      Ian Oakley, Jun Ho Huh, Junsung Cho, <strong>Geumhwan Cho</strong>, MD. Rasel Islam, and Hyoungshick Kim,
-      ASIACCS: The 11th ACM Asia Conference on Computer and Communications Security, Incheon, Korea, 2018 (<strong>CS Top conference</strong>, acceptance rate: 52/310 = 17%).
-      <a class="pub-link" href="https://dl.acm.org/doi/abs/10.1145/3196494.3196555">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Design and Analysis of Push Notification-Based Malware on Android",
-      Sangwon Hyun, Junsung Cho, <strong>Geumhwan Cho</strong>, and Hyoungshick Kim,
-      Security and Communication Networks, Volume 2018, Article ID 8510256, 12 pages, July 2018 (SCIE; Q3).
-      <a class="pub-link" href="https://doi.org/10.1155/2018/8510256">link</a>
-    </div>
-  </li>
-
-</ul> 
-
-  
-<!-- 2017 -->
-<h2 class="pub-year">2017</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Preventing DNS amplification attacks using the history of DNS queries with SDN",
-      Soyoung Kim, Sora Lee, <strong>Geumhwan Cho</strong>, Muhammad Ejaz Ahmed, Jaehoon Paul Jeong, and Hyoungshick Kim,
-      ESORICS: The 22nd European Symposium on Research in Computer Security, Oslo, Norway, 2017 (<strong>CS Top conference</strong>, acceptance rate: 54/339 = 16%).
-      <a class="pub-link" href="https://link.springer.com/chapter/10.1007/978-3-319-66399-9_8">link</a>
-    </div>
-  </li>
-
-</ul>   
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "SysPal: System-guided Pattern Locks on Android",
-      <strong>Geumhwan Cho</strong>, Jun Ho Huh, Junsung Cho, Seongyeol Oh, Youngbae Song, and Hyoungshick Kim,
-      S&P: The 38th IEEE Symposium on Security and Privacy, San Jose, USA, 2017 (<strong>CS Top conference</strong>, acceptance rate: 60/419 = 14.3%).
-      <a class="pub-link" href="https://ieeexplore.ieee.org/document/7958586">link</a>
-    </div>
-  </li>
-
-</ul>
-
-  
-<!-- 2016 -->
-<h2 class="pub-year">2016</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[2]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "WiPING: Wi-Fi signal-based PIN Guessing attack",
-      Seunghun Cha, Jaewoo Park, <strong>Geumhwan Cho</strong>, Jun Ho Huh, and Hyoungshick Kim,
-      CCS: The 23rd ACM Conference on Computer and Communications Security (Poster), Vienna, Austria, 2016.
-      <a class="pub-link" href="https://dl.acm.org/doi/10.1145/2976749.2989067">link</a>
-    </div>
-  </li>
-
-</ul>  
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">J</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Combating online fraud attacks in mobile-based advertising",
-      <strong>Geumhwan Cho</strong>, Junsung Cho, Youngbae Song, Donghyun Choi, and Hyoungshick Kim,
-      EURASIP Journal on Information Security, Vol. 2016(1), 2016.
-      <a class="pub-link" href="https://link.springer.com/article/10.1186/s13635-015-0027-7">link</a>
-    </div>
-  </li>
-
-</ul> 
-  
-
-<!-- 2015 -->
-<h2 class="pub-year">2015</h2>
-
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[4]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "An empirical study of click fraud in mobile advertising networks",
-      <strong>Geumhwan Cho</strong>, Junsung Cho, Youngbae Song, and Hyoungshick Kim,
-      IWCC: The 4th Workshop on Cyber Crime held in conjunction with ARES, Toulouse, France, 2015.
-      <a class="pub-link" href="https://ieeexplore.ieee.org/document/7299940">link</a>
-    </div>
-  </li>
-
-</ul>
-  
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[3]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "Keyboard or Keylogger?: A security analysis of third-party keyboards on Android",
-      Junsung Cho, <strong>Geumhwan Cho</strong>, and Hyoungshick Kim,
-      PST: The 13rd International Conference on Privacy, Security and Trust, Izmir, Turkey, 2015.
-      <a class="pub-link" href="https://ieeexplore.ieee.org/document/7232970">link</a>
-    </div>
-  </li>
-
-</ul>
-  
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[2]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "On the Effectiveness of Pattern Lock Strength Meters – Measuring the Strength of Real World Pattern Locks",
-      Youngbae Song, <strong>Geumhwan Cho</strong>, Seongyeol Oh, Hyoungshick Kim, and Jun Ho Huh,
-      CHI: The 33rd ACM SIGCHI Conference on Human Factors in Computing Systems, Seoul, Korea, 2015 (<strong>CS Top conference</strong>, acceptance rate: 565/2435 = 23%).
-      <a class="pub-link" href="https://dl.acm.org/doi/10.1145/2702123.2702365">link</a>
-    </div>
-  </li>
-
-</ul>
-  
-<ul class="pub-list">
-
-  <li>
-    <div class="pub-left">
-      <span class="pub-no">[1]</span>
-      <span class="pub-type">C</span>
-      <span class="pub-region pub-int">INT</span>
-    </div>
-
-    <div class="pub-content">
-      "A Framework for Security Services Based on Software-Defined Networking",
-      Jaehon Jeong, Jihyeok Seo, <strong>Geumhwan Cho</strong>, Hyoungshick Kim and Jung-Soo Park,
-      DC2: The 2nd Workshop on Device Centric Cloud, 2015.
-      <a class="pub-link" href="https://ieeexplore.ieee.org/document/7096163">link</a>
-    </div>
-  </li>
-
-</ul>
-
-
-
-</section>
-
-</main>
-
-<footer class="site-footer">
-  <div class="container footer-row">
-    <div style="width: 100%; text-align: center;">Copyright Ⓒ User-centered SEcurity Lab. @ Korea University Sejong Campus. All Rights Reserved.</div>
-  </div>
-</footer>
-
-<script>
-document.getElementById("y").textContent = new Date().getFullYear();
-</script>
-
+  </footer>
+
+  <script>
+    (() => {
+      const publicationItems = [
+        ...document.querySelectorAll(".pub-list > li")
+      ];
+
+      const tabs = [
+        ...document.querySelectorAll(".pub-tab")
+      ];
+
+      const venueMarkers = [
+        "Mathematics,",
+        "Journal of ",
+        "Mobisec:",
+        "UbiComp:",
+        "SOUPS:",
+        "ACM Transactions",
+        "Applied Sciences,",
+        "ASIACCS:",
+        "HICSS:",
+        "Computers &amp; Security,",
+        "Computers & Security,",
+        "WISA:",
+        "Security and Communication Networks,",
+        "ESORICS:",
+        "S&amp;P:",
+        "S&P:",
+        "CCS:",
+        "EURASIP Journal",
+        "IWCC:",
+        "PST:",
+        "CHI:",
+        "DC2:",
+        "2026년 한국정보보호학회"
+      ];
+
+      publicationItems.forEach((item) => {
+        const content = item.querySelector(".pub-content");
+        const link = content.querySelector(".pub-link");
+        const linkMarkup = link ? link.outerHTML : "";
+        const original = content.innerHTML.trim();
+
+        const titleMatch = original.match(
+          /^"([\s\S]*?)",\s*([\s\S]*)$/
+        );
+
+        const typeBadge = item.querySelector(".pub-type");
+
+        let publicationDate = "";
+        let publicationNote = "";
+
+        item.dataset.region = item.querySelector(".pub-int")
+          ? "INT"
+          : "DOM";
+
+        if (typeBadge) {
+          const isJournal =
+            typeBadge.textContent.trim() === "J";
+
+          typeBadge.textContent = isJournal
+            ? "Journal"
+            : "Conference";
+
+          typeBadge.classList.toggle(
+            "is-conference",
+            !isJournal
+          );
+        }
+
+        if (titleMatch) {
+          content.innerHTML = "";
+
+          const detailsHtml = titleMatch[2]
+            .replace(linkMarkup, "")
+            .trim();
+
+          const markerPositions = venueMarkers
+            .map((marker) => detailsHtml.indexOf(marker))
+            .filter((position) => position >= 0);
+
+          const venueStart = markerPositions.length
+            ? Math.min(...markerPositions)
+            : -1;
+
+          const authorsHtml =
+            venueStart >= 0
+              ? detailsHtml
+                  .slice(0, venueStart)
+                  .replace(/,\s*$/, "")
+                  .trim()
+              : detailsHtml;
+
+          let publishedHtml =
+            venueStart >= 0
+              ? detailsHtml.slice(venueStart).trim()
+              : "";
+
+          const dateMatch = publishedHtml.match(
+            /,\s*((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}|\d{4})\s*\.?\s*(?:\(([\s\S]*?)\))?\.\s*$/
+          );
+
+          if (dateMatch) {
+            publicationDate = dateMatch[1];
+            publicationNote = dateMatch[2] || "";
+
+            publishedHtml = publishedHtml
+              .slice(0, dateMatch.index)
+              .trim();
+          }
+
+          const title = document.createElement("h3");
+          title.className = "pub-card-title";
+          title.textContent = titleMatch[1];
+
+          const details = document.createElement("div");
+          details.className = "pub-card-details";
+
+          const authors = document.createElement("div");
+          authors.className = "pub-card-authors";
+          authors.innerHTML = `
+            <span class="pub-detail-label">AUTHORS</span>
+            ${authorsHtml}
+          `;
+
+          const published = document.createElement("div");
+          published.className = "pub-card-published";
+          published.innerHTML = `
+            <span class="pub-detail-label">PUBLISHED IN</span>
+            ${publishedHtml}
+          `;
+
+          details.append(authors, published);
+          content.append(title, details);
+        }
+
+        if (link || publicationDate || publicationNote) {
+          const footer = document.createElement("div");
+          footer.className = "pub-card-link";
+
+          if (publicationDate) {
+            const date = document.createElement("span");
+            date.className = "pub-card-date";
+            date.textContent = publicationDate;
+            footer.append(date);
+          }
+
+          if (publicationNote) {
+            const note = document.createElement("span");
+            note.className = "pub-card-note";
+            note.innerHTML = publicationNote.replace(
+              /;\s*/g,
+              " · "
+            );
+            footer.append(note);
+          }
+
+          if (link) {
+            link.textContent = "View paper";
+            footer.append(link);
+          }
+
+          item.append(footer);
+        }
+      });
+
+      function updateYearVisibility() {
+        document
+          .querySelectorAll(".pub-year")
+          .forEach((year) => {
+            let sibling = year.nextElementSibling;
+            let hasVisiblePublication = false;
+
+            while (
+              sibling &&
+              !sibling.classList.contains("pub-year")
+            ) {
+              if (
+                sibling.matches(".pub-list") &&
+                sibling.querySelector("li:not([hidden])")
+              ) {
+                hasVisiblePublication = true;
+              }
+
+              sibling = sibling.nextElementSibling;
+            }
+
+            year.hidden = !hasVisiblePublication;
+          });
+      }
+
+      function setFilter(region) {
+        tabs.forEach((tab) => {
+          const selected =
+            tab.dataset.filter === region;
+
+          tab.setAttribute(
+            "aria-selected",
+            String(selected)
+          );
+        });
+
+        publicationItems.forEach((item) => {
+          item.hidden =
+            item.dataset.region !== region;
+        });
+
+        updateYearVisibility();
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          setFilter(tab.dataset.filter);
+        });
+      });
+
+      setFilter("INT");
+    })();
+  </script>
 </body>
 </html>
