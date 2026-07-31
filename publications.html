@@ -5,7 +5,228 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>USELab — Publications</title>
   <link rel="stylesheet" href="style.css" />
-  
+  <style>
+    .pub-tabs {
+      display: inline-flex;
+      gap: 8px;
+      margin: 0 0 42px;
+      padding: 6px;
+      border: 1px solid #e6e1dc;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 8px 28px rgba(42, 34, 31, .05);
+    }
+
+    .pub-tab {
+      display: inline-flex;
+      min-height: 46px;
+      padding: 0 20px;
+      align-items: center;
+      gap: 10px;
+      border: 0;
+      border-radius: 999px;
+      color: #6f6964;
+      background: transparent;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pub-tab-count {
+      display: grid;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 7px;
+      place-items: center;
+      border-radius: 999px;
+      color: #6f6964;
+      background: #efedeb;
+      font-size: 12px;
+    }
+
+    .pub-tab[aria-selected="true"] {
+      color: #fff;
+      background: #24201e;
+      box-shadow: 0 5px 16px rgba(20, 18, 17, .17);
+    }
+
+    .pub-tab[aria-selected="true"] .pub-tab-count {
+      color: #24201e;
+      background: #fff;
+    }
+
+    .pub-year {
+      display: flex;
+      margin: 34px 0 18px;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .pub-year::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: #e6e1dc;
+    }
+
+    .pubs .pub-list {
+      margin: 0 0 14px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pubs .pub-list > li {
+      display: grid;
+      min-height: 190px;
+      padding: 28px 30px;
+      grid-template-columns: 110px minmax(0, 1fr) auto;
+      grid-template-areas: "meta content link";
+      align-items: stretch;
+      gap: 30px;
+      border: 1px solid #e6e1dc;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 12px 34px rgba(37, 28, 24, .055);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .pubs .pub-list > li:hover {
+      transform: translateY(-3px);
+      border-color: #d8d0ca;
+      box-shadow: 0 18px 42px rgba(37, 28, 24, .09);
+    }
+
+    .pubs .pub-list > li[hidden],
+    .pub-year[hidden] {
+      display: none;
+    }
+
+    .pub-left {
+      grid-area: meta;
+      display: flex;
+      padding-right: 24px;
+      align-items: flex-start;
+      align-content: flex-start;
+      flex-wrap: wrap;
+      gap: 9px;
+      border-right: 1px solid #e6e1dc;
+    }
+
+    .pub-left .pub-no {
+      width: 100%;
+      margin-bottom: 4px;
+      color: #9a948f;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .pub-content {
+      grid-area: content;
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .pub-card-title {
+      margin: 0;
+      padding: 0 0 18px;
+      color: #191716;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(22px, 2vw, 30px);
+      font-weight: 700;
+      line-height: 1.28;
+      letter-spacing: -.025em;
+    }
+
+    .pub-card-details {
+      padding-top: 18px;
+      border-top: 1px solid #e6e1dc;
+      color: #514c48;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .pub-card-details::before {
+      content: "AUTHORS · PUBLICATION DETAILS";
+      display: block;
+      margin-bottom: 5px;
+      color: #9a948f;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .1em;
+    }
+
+    .pub-card-link {
+      grid-area: link;
+      display: flex;
+      padding-left: 28px;
+      align-items: center;
+      border-left: 1px solid #e6e1dc;
+    }
+
+    .pub-card-link .pub-link {
+      display: inline-flex;
+      min-height: 40px;
+      padding: 0 16px;
+      align-items: center;
+      border: 1px solid rgba(140, 21, 21, .18);
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .pub-card-link .pub-link::after {
+      content: "↗";
+      margin-left: 7px;
+    }
+
+    @media (max-width: 760px) {
+      .pub-tabs {
+        display: flex;
+      }
+
+      .pub-tab {
+        flex: 1;
+        justify-content: center;
+        padding: 0 14px;
+      }
+
+      .pubs .pub-list > li {
+        min-height: 0;
+        padding: 23px;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "meta"
+          "content"
+          "link";
+        gap: 22px;
+      }
+
+      .pub-left {
+        padding: 0;
+        align-items: center;
+        border-right: 0;
+      }
+
+      .pub-left .pub-no {
+        width: auto;
+        margin: 0 auto 0 0;
+      }
+
+      .pub-card-title {
+        font-size: 23px;
+      }
+
+      .pub-card-link {
+        padding: 18px 0 0;
+        border-top: 1px solid #e6e1dc;
+        border-left: 0;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -34,12 +255,14 @@
 
 <section class="section pubs">
 
-<p class="pub-legend">
-  <span class="pub-type">J</span> Journal
-  <span class="pub-type">C</span> Conference / Workshop
-  <span class="pub-region pub-int">INT</span> International
-  <span class="pub-region pub-dom">DOM</span> Domestic
-</p>
+<div class="pub-tabs" role="tablist" aria-label="Publication category">
+  <button class="pub-tab" type="button" role="tab" aria-selected="true" data-filter="INT">
+    International <span class="pub-tab-count" data-count="INT">0</span>
+  </button>
+  <button class="pub-tab" type="button" role="tab" aria-selected="false" data-filter="DOM">
+    Domestic <span class="pub-tab-count" data-count="DOM">0</span>
+  </button>
+</div>
 
 
 <!-- 2026 -->
@@ -600,7 +823,80 @@
 </footer>
 
 <script>
-document.getElementById("y").textContent = new Date().getFullYear();
+(() => {
+  const publicationItems = [...document.querySelectorAll(".pub-list > li")];
+  const tabs = [...document.querySelectorAll(".pub-tab")];
+
+  publicationItems.forEach((item) => {
+    const content = item.querySelector(".pub-content");
+    const link = content.querySelector(".pub-link");
+    const original = content.innerHTML.trim();
+    const titleMatch = original.match(/^"([\s\S]*?)",\s*([\s\S]*)$/);
+
+    if (titleMatch) {
+      content.innerHTML = "";
+
+      const title = document.createElement("h3");
+      title.className = "pub-card-title";
+      title.textContent = titleMatch[1];
+
+      const details = document.createElement("div");
+      details.className = "pub-card-details";
+      details.innerHTML = titleMatch[2].replace(link ? link.outerHTML : "", "").trim();
+
+      content.append(title, details);
+    }
+
+    if (link) {
+      const linkArea = document.createElement("div");
+      linkArea.className = "pub-card-link";
+      link.textContent = "View paper";
+      linkArea.append(link);
+      item.append(linkArea);
+    }
+
+    item.dataset.region = item.querySelector(".pub-int") ? "INT" : "DOM";
+  });
+
+  ["INT", "DOM"].forEach((region) => {
+    const count = publicationItems.filter((item) => item.dataset.region === region).length;
+    document.querySelector(`[data-count="${region}"]`).textContent = count;
+  });
+
+  function updateYearVisibility() {
+    document.querySelectorAll(".pub-year").forEach((year) => {
+      let sibling = year.nextElementSibling;
+      let hasVisiblePublication = false;
+
+      while (sibling && !sibling.classList.contains("pub-year")) {
+        if (sibling.matches(".pub-list") && sibling.querySelector("li:not([hidden])")) {
+          hasVisiblePublication = true;
+        }
+        sibling = sibling.nextElementSibling;
+      }
+
+      year.hidden = !hasVisiblePublication;
+    });
+  }
+
+  function setFilter(region) {
+    tabs.forEach((tab) => {
+      tab.setAttribute("aria-selected", String(tab.dataset.filter === region));
+    });
+
+    publicationItems.forEach((item) => {
+      item.hidden = item.dataset.region !== region;
+    });
+
+    updateYearVisibility();
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => setFilter(tab.dataset.filter));
+  });
+
+  setFilter("INT");
+})();
 </script>
 
 </body>
