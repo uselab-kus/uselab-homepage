@@ -1202,8 +1202,7 @@
 
       function setFilter(region) {
         tabs.forEach((tab) => {
-          const selected =
-            tab.dataset.filter === region;
+          const selected = tab.dataset.filter === region;
 
           tab.setAttribute(
             "aria-selected",
@@ -1211,13 +1210,51 @@
           );
         });
 
-        publicationItems.forEach((item) => {
-          item.hidden =
-            item.dataset.region !== region;
-        });
+  publicationItems.forEach((item) => {
+    item.hidden =
+      item.dataset.region !== region;
+  });
 
-        updateYearVisibility();
+  /*
+   * 선택된 탭에서 보이는 논문만 연도별로 다시 번호 지정
+   * 각 연도에서 최신 논문이 가장 큰 번호를 가짐
+   */
+  document
+    .querySelectorAll(".pub-year")
+    .forEach((year) => {
+      const visibleItems = [];
+      let sibling = year.nextElementSibling;
+
+      while (
+        sibling &&
+        !sibling.classList.contains("pub-year")
+      ) {
+        if (sibling.matches(".pub-list")) {
+          const item = sibling.querySelector(
+            "li:not([hidden])"
+          );
+
+          if (item) {
+            visibleItems.push(item);
+          }
+        }
+
+        sibling = sibling.nextElementSibling;
       }
+
+      const total = visibleItems.length;
+
+      visibleItems.forEach((item, index) => {
+        const number = item.querySelector(".pub-no");
+
+        if (number) {
+          number.textContent = `[${total - index}]`;
+        }
+      });
+    });
+
+  updateYearVisibility();
+}
 
       tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
